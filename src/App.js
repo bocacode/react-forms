@@ -5,17 +5,50 @@ import './App.css';
 
 function App() {
 
-  const [title,setTitle] = useState("this is the title")
+  const [formSubmitted,setFormSubmitted] = useState(false)
+  const [errorMessage,setErrorMessage] = useState("")
+  const [title,setTitle] = useState('this is the title')
   const [description,setDescription] = 
                               useState("your description")
   const [author,setAuthor] = useState("todd albert")
 
-  console.log(title)
+  // console.log(title)
 
-  function formSubmit(e)  {
+  //const formSubmit = async (e) => {
+
+  async function  formSubmit(e)  {
+    try {
     e.preventDefault();
-    console.log("form submitted")
+    //console.log("form submitted")
 
+    // const comment = {
+    //     title:title,
+    //     description:description,
+    //     author:author,
+    // }
+    const comment = {
+      title,
+      description,
+      author,
+  }
+
+    console.log("form submitted with ",comment)
+
+    // really submit it to an api
+    const results = await fetch("https://sql.bocacode.com/comments",{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(comment)
+    })
+    console.log(results)
+    const data = await results.json()
+
+    console.log(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
 
