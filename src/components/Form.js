@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 
-export default function Form() {
+export default function Form({ ronsProps, aliciasProps, handleClose, setStateFromChild }) {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [validForm, setValidForm] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [form, setForm] = useState({})
+
+  console.log('props here', ronsProps, aliciasProps)
 
   useEffect(() => {
     if (form?.title?.length > 3 && form?.description?.length > 10) {
@@ -37,7 +39,9 @@ export default function Form() {
       setFormSubmitted(true)
       setErrorMessage('')
       setValidForm(true)
-      alert('Wow! Submitted')
+
+      handleClose()
+      setStateFromChild(form)
     } catch (error) {
       console.error(error)
       setErrorMessage('there was an error submitting your comment' + error.toString())
@@ -52,8 +56,10 @@ export default function Form() {
 
   return (
     <div className='App'>
+      <h3>
+        {ronsProps} {aliciasProps[0]}
+      </h3>
       <form onSubmit={formSubmit}>
-        <h1>Comments</h1>
         <label>Title</label>
         <input
           type='text'
@@ -85,6 +91,7 @@ export default function Form() {
         </select>
 
         <h3>{form.author}</h3>
+        <button onClick={() => setStateFromChild('hello father')}> send stuff back to parent</button>
         {!formSubmitted && <button>Submit Form</button>}
         {errorMessage && (
           <h1>
